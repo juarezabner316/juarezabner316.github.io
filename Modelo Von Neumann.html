@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modelo de Von Neumann - Interactivo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leader-line/1.0.7/leader-line.min.js"></script>
+  <style>
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f4f6f8;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .header {
+      background: #EDED8E;
+      color: black;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      margin-top: 10px;
+    }
+
+    .diagram-container {
+      padding: 50px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .component {
+      background-color: #ecf0f1;
+      border-radius: 15px;
+      padding: 25px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .component:hover {
+      transform: scale(1.03);
+    }
+
+    .component h3, .component h4 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+    }
+
+    .component p {
+      font-size: 1rem;
+      color: #333;
+    }
+
+    .component span.author {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    .cpu-container {
+      grid-column: 1;
+      grid-row: 1;
+      background-color: #68A2D2;
+    }
+
+    .cpu-subcomponents {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .alu, .control-unit {
+      flex: 1 1 45%;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .alu {
+      background-color: #EFE4C6;
+    }
+
+    .control-unit {
+      background-color: #B3E2EA;
+    }
+
+    .memory {
+      grid-column: 2;
+      grid-row: 1;
+      background-color: #B7EBDE;
+    }
+
+    .io {
+      grid-column: 3;
+      grid-row: 1;
+      background-color: #C9CDF2;
+    }
+
+    .bus {
+      grid-column: 1 / 4;
+      grid-row: 2;
+      background-color: #F3E1D3;
+    }
+
+    .legend {
+      text-align: center;
+      padding: 15px;
+      background-color: #dfe6e9;
+      font-size: 0.9rem;
+      color: #2d3436;
+    }
+
+    @media (max-width: 768px) {
+      .diagram-container {
+        grid-template-columns: 1fr;
+        padding: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🖥️ Modelo de Von Neumann</h1>
+      <p>Sistemas Operativos Grupo 2</p>
+    </div>
+
+    <div class="diagram-container">
+      <div class="component cpu-container" id="cpu" data-component="cpu">
+        <h3>🧠 CPU (Procesador)</h3>
+        <p>Unidad Central de Procesamiento</p>
+        <div class="cpu-subcomponents">
+          <div class="alu component" data-component="alu">
+            <h4>🔢 ALU</h4>
+            <p>Unidad Aritmética y Lógica</p>
+            <span class="author">Jose Torres</span>
+          </div>
+          <div class="control-unit component" data-component="control">
+            <h4>⚙️ UC</h4>
+            <p>Unidad de Control</p>
+            <span class="author">Roger Herrera</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="component memory" id="memory" data-component="memory">
+        <h3>💾 Memoria Principal</h3>
+        <p>Almacena programas y datos</p>
+        <span class="author">Natali Montenegro</span>
+      </div>
+
+      <div class="component io" id="io" data-component="io">
+        <h3>🔌 Entrada y Salida</h3>
+        <p>Interacción con el exterior</p>
+        <span class="author">Abner Juarez</span>
+      </div>
+
+      <div class="component bus" id="bus" data-component="bus">
+        <h3>🛤️ BUS del Sistema</h3>
+        <p>Comunicación entre componentes</p>
+        <span class="author">Abner Juarez</span>
+      </div>
+    </div>
+
+    <div class="legend">
+      💡 Haz clic en cualquier componente para ver información detallada
+    </div>
+  </div>
+
+  
+
+ <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f2f5;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .von-neumann {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+      position: relative;
+    }
+
+    .box {
+      background-color: #ecf0f1;
+      border: 2px dashed #aaa;
+      padding: 15px;
+      border-radius: 12px;
+      text-align: center;
+      position: relative;
+    }
+
+    .cpu {
+      grid-column: 1 / 2;
+      grid-row: 1 / 2;
+    }
+
+    .alu, .uc {
+      background-color: #d0ebff;
+      border: 2px dashed #5b8bd0;
+      margin-top: 10px;
+    }
+
+    .memory {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+      background-color: #b7ebde;
+    }
+
+    .io {
+      grid-column: 3 / 4;
+      grid-row: 1 / 2;
+    }
+
+    .io .box {
+      background-color: #c9cdf2;
+      margin-bottom: 10px;
+    }
+
+    .bus {
+      grid-column: 1 / 4;
+      grid-row: 2 / 3;
+      background-color: #ffe0b3;
+      font-weight: bold;
+    }
+
+    .label {
+      font-size: 0.85rem;
+      color: #444;
+      margin-top: 4px;
+    }
+
+    .author {
+      font-size: 0.75rem;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    /* Arrows (simplified using CSS only) */
+    .arrow {
+      position: absolute;
+      width: 100px;
+      height: 2px;
+      background: repeating-linear-gradient(to right, black 0 5px, transparent 5px 10px);
+      z-index: 10;
+    }
+
+    /* Flechas */
+    .arrow1 {
+      top: 120px;
+      left: 330px;
+      transform: rotate(0deg);
+    }
+
+    .arrow2 {
+      top: 120px;
+      left: 660px;
+      transform: rotate(0deg);
+    }
+
+    .arrow3 {
+      width: 2px;
+      height: 80px;
+      background: repeating-linear-gradient(to bottom, black 0 5px, transparent 5px 10px);
+      top: 200px;
+      left: 600px;
+    }
+
+    .arrow4 {
+      width: 2px;
+      height: 80px;
+      background: repeating-linear-gradient(to bottom, black 0 5px, transparent 5px 10px);
+      top: 200px;
+      left: 250px;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .von-neumann {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .arrow {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+   
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <div id="modalBody">
+                <h2>Selecciona un componente</h2>
+                <p>Haz clic en cualquier parte del diagrama para conocer más detalles sobre cada componente del modelo de Von Neumann.</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        #modalBody h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        #modalBody p, #modalBody ul {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        #modalBody ul {
+            margin-left: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+
+    <script>
+        const components = document.querySelectorAll('.component');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalBody = document.getElementById('modalBody');
+
+        const contentMap = {
+            cpu: {
+                title: '🧠 CPU - Unidad Central de Procesamiento',
+                content: `
+                    <p>La CPU es el "cerebro" del sistema. Está compuesta por la ALU (Unidad Aritmética y Lógica) y la UC (Unidad de Control).</p>
+                    <ul>
+                        <li>Ejecuta instrucciones</li>
+                        <li>Coordina operaciones internas</li>
+                        <li>Gestiona el flujo de datos</li>
+                    </ul>
+                `
+            },
+            alu: {
+                 title: '🔢 ALU - Unidad Aritmética y Lógica',
+    content: `
+        <p>La ALU (Unidad Aritmético-Lógica) es uno de los componentes más fundamentales de la CPU. Su función es ejecutar operaciones matemáticas y lógicas directamente sobre datos binarios, y desempeña un papel central en la arquitectura de Von Neumann.</p>
+
+        <p><strong>Funciones principales:</strong></p>
+        <ul>
+            <li>Realiza operaciones aritméticas básicas: suma, resta, multiplicación y división.</li>
+            <li>Ejecuta operaciones lógicas: AND, OR, NOT, XOR, comparaciones (mayor, menor, igual), desplazamientos y rotaciones.</li>
+            <li>Genera banderas o "flags" en registros de estado que indican condiciones como cero, acarreo, negativo o desbordamiento.</li>
+        </ul>
+
+        <p><strong>Componentes internos clave:</strong></p>
+        <ul>
+            <li><strong>Registros de entrada:</strong> almacenan los operandos a utilizar.</li>
+            <li><strong>Registro acumulador:</strong> guarda resultados intermedios o finales.</li>
+            <li><strong>Multiplexores:</strong> seleccionan qué operación enviar como salida.</li>
+            <li><strong>Circuitos operacionales:</strong> ejecutan los cálculos y evaluaciones.</li>
+            <li><strong>Registros de estado:</strong> notifican el resultado de las operaciones a la Unidad de Control.</li>
+        </ul>
+
+        <p><strong>Interacción con la Unidad de Control:</strong> la ALU no decide qué operación ejecutar por sí sola. Depende de señales de control externas que le indican qué función realizar. También proporciona retroalimentación a la Unidad de Control para permitir instrucciones condicionales como saltos, bucles, etc.</p>
+
+        <p><strong>Relación con la Arquitectura de Von Neumann:</strong> la ALU forma parte esencial del modelo de programa almacenado propuesto por John von Neumann. Procesa tanto datos como instrucciones que se encuentran en la misma memoria, permitiendo flexibilidad y programación dinámica.</p>
+
+        <p><strong>Diseño e implementación:</strong></p>
+        <ul>
+            <li>Construida mediante circuitos combinacionales, sumadores paralelos y compuertas lógicas.</li>
+            <li>Operaciones seleccionadas por señales S0, S1 y S2.</li>
+            <li>ALUs modernas usan lenguajes como VHDL y tecnologías como transistores neuMOS para mejorar eficiencia y reducir tamaño.</li>
+        </ul>
+    `
+
+            },
+            control: {
+    title: '⚙ UC - Unidad de Control',
+    content: `
+        <p>Características especiales:</p>
+        <ul>
+            <li>La unidad de control es el componente principal del procesador.</li>
+            <li>Funciona como un circuito en serie para completar el proceso de aprendizaje.</li>
+            <li>Su función principal es activar y generar señales eléctricas internas para controlar los datos y las funciones del dispositivo.</li>
+            <li>Recuperar las instrucciones almacenadas en la memoria y ejecutar cada operación directamente.</li>
+        </ul>
+
+        <p><strong>Cómo:</strong></p>
+        <ol>
+            <li>Obtener la siguiente instrucción a ejecutar desde la memoria según la dirección almacenada en la interfaz de programación (IP).</li>
+            <li>Modificar la instrucción para describir la operación a realizar (suma, resta, carga, salto, etc.).</li>
+            <li>Ejecutar la instrucción utilizando las señales adecuadas para controlar la ALU, los registros y la memoria y garantizar su correcto funcionamiento.</li>
+            <li>Guardar el resultado en una lista o en la memoria correspondiente.</li>
+            <li>Actualizar la hoja de cálculo para mostrar la siguiente lección, secuencialmente o con un salto condicional.</li>
+        </ol>
+
+        <p><strong>Buscar:</strong></p>
+        <ul>
+            <li>Ajusta la memoria para leer instrucciones y mensajes.</li>
+            <li>Controla la unidad aritmético-lógica (ALU) para realizar operaciones aritméticas y lógicas.</li>
+            <li>Controla el movimiento de datos entre los registros internos y la memoria principal.</li>
+            <li>El flujo de instrucciones se controla mediante el búfer de programa y las interrupciones de instrucciones.</li>
+            <li>Monitorea las señales internas que garantizan la correcta finalización de cada etapa del ciclo de entrenamiento.</li>
+        </ul>
+
+        <p>En aplicaciones en desarrollo, también se consideran las interrupciones basadas en eventos y los mecanismos de recuperación externos.</p>
+
+        <p><strong>Temas relacionados:</strong></p>
+        <ul>
+            <li>Parte del diseño de von Neumann, en el que los datos y las instrucciones se almacenan en una memoria compartida.</li>
+            <li>Se utiliza el ciclo de control, una función importante en el desarrollo de software.</li>
+            <li>Se utilizan señales eléctricas para regular la interacción entre la ALU, los registros, la memoria y otros componentes.</li>
+            <li>Garantiza que las instrucciones se ejecuten con rapidez y precisión en una máquina virtual.</li>
+        </ul>
+
+        <p><strong>Importancia:</strong></p>
+        <ul>
+            <li>Es el "director de orquesta" que garantiza el correcto funcionamiento de la CPU y la correcta ejecución de los programas.</li>
+            <li>Su diseño y funcionamiento mantienen la estructura secuencial clásica que ha permanecido vigente en la mayoría de los computadores modernos.</li>
+        </ul>
+    `
+},
+           memory: {
+    title: '💾 Memoria Principal',
+    content: `
+        <p>La RAM es la memoria temporal que la computadora utiliza mientras está encendida. Allí se cargan las aplicaciones y datos que la CPU necesita de inmediato, permitiendo que todo funcione con rapidez.</p>
+        
+        <p>📍 <strong>¿Dónde está y qué hace?</strong><br>
+        En el modelo de Von Neumann, la RAM es el área central donde la CPU accede a los datos e instrucciones. También contiene provisionalmente el sistema operativo y los programas en ejecución. Su función es actuar como puente rápido entre el procesador y los dispositivos de almacenamiento más lentos.</p>
+
+        <p>🧩 <strong>Tipos de RAM:</strong></p>
+        <ul>
+            <li><strong>⚡ SRAM:</strong> Más rápida y costosa, usada en la caché.</li>
+            <li><strong>💸 DRAM:</strong> Más lenta y económica, es la RAM común.</li>
+        </ul>
+
+        <p>💽 <strong>Memoria Virtual:</strong><br>
+        Cuando la RAM se llena, se utiliza una parte del disco (swap) para simular más memoria y así seguir trabajando sin problemas.</p>
+
+        <p>🧠 <strong>Función del Sistema Operativo:</strong><br>
+        Gestiona la memoria: la distribuye, la libera y la protege. Además, colabora con la MMU para traducir direcciones virtuales a físicas.</p>
+    `
+},
+          bus: {
+    title: '🛤️ BUS del Siste    ma (Abner Juarez)',
+    content: `
+        <p>El bus es el canal de comunicación compartido que conecta los componentes principales del modelo de Von Neumann: la CPU, la memoria principal y la unidad de Entrada/Salida (E/S). Permite que la información fluya entre estos componentes de manera eficiente.</p>
+        <h4>Tipos de Buses:</h4>
+        <ul>
+            <li><strong>Bus de datos:</strong> Transporta los datos que se van a procesar o almacenar, como instrucciones o información de archivos. El ancho del bus determina cuántos bits se pueden transferir simultáneamente (8, 16, 32 o 64 bits).</li>
+            <li><strong>Bus de direcciones:</strong> Transporta la dirección de memoria donde se encuentra un dato o el puerto de un dispositivo de E/S. La CPU lo usa para seleccionar ubicaciones específicas.</li>
+            <li><strong>Bus de control:</strong> Transporta señales de control y estado que indican la dirección del flujo de datos (lectura o escritura) y sincronizan las operaciones entre los componentes.</li>
+        </ul>
+        <h4>Evolución del Bus:</h4>
+        <p>Originalmente, los buses eran paralelos, lo que significa que varias líneas transportaban bits simultáneamente. Sin embargo, con la evolución tecnológica, los sistemas modernos han adoptado buses seriales de alta velocidad como PCIe (Peripheral Component Interconnect Express) y USB (Universal Serial Bus), que permiten transferencias de datos mucho más rápidas y eficientes.</p>
+    `
+},
+io: {
+    title: '🔌 Unidad de Entrada y Salida (E/S) (Abner Juarez)',
+    content: `
+        <p>La unidad de Entrada/Salida es responsable de gestionar la comunicación entre la computadora y el mundo exterior a través de dispositivos como el teclado, monitor, discos duros y red.</p>
+        <h4>Componentes clave:</h4>
+        <ul>
+            <li><strong>Controlador de E/S:</strong> Para cada dispositivo, el controlador contiene registros que el procesador puede leer o escribir para comunicarse con el dispositivo.</li>
+            <li><strong>Registro de Datos:</strong> Almacena los datos que se transfieren desde o hacia el dispositivo.</li>
+            <li><strong>Registro de Estado:</strong> Indica el estado actual del dispositivo, como ocupado, error o datos listos para leer.</li>
+            <li><strong>Registro de Control:</strong> Recibe comandos del procesador para controlar el funcionamiento del dispositivo.</li>
+        </ul>
+        <h4>Manejo de interrupciones:</h4>
+        <p>Una interrupción es una señal enviada por un dispositivo de E/S a la CPU para notificar que una operación ha finalizado (por ejemplo, que una tecla fue presionada). Esto permite que la CPU realice otras tareas en lugar de esperar continuamente (polling).</p>
+        <p>El ROM BIOS juega un papel clave en gestionar estas interrupciones y establecer la comunicación inicial con los dispositivos de E/S al arrancar el sistema.</p>
+        <h4>Acceso Directo a Memoria (DMA):</h4>
+        <p>Para operaciones que implican grandes volúmenes de datos, como transferir archivos desde un disco duro, la técnica DMA permite que un controlador transfiera datos directamente entre la memoria principal y el dispositivo, sin la intervención constante de la CPU, liberándola para otras tareas.</p>
+        <h4>Material Didáctico y Complementos para tu proyecto:</h4>
+        <ul>
+            <li><strong>Simuladores:</strong> El Simulador de Sistemas de Cómputo (SIMAS) y CPUlator ayudan a visualizar el flujo de datos y el funcionamiento de interrupciones.</li>
+            <li><strong>Videos educativos:</strong> Recursos como "Von Neumann Architecture" y "Computer Buses" de ITfreetraining, y "I/O Systems Overview" de Kevin P. Smith explican estos conceptos con ejemplos claros.</li>
+        </ul>
+    `
+}
+        };
+
+        components.forEach(component => {
+    component.addEventListener('click', (event) => {
+        event.stopPropagation(); // Evita que se dispare el evento del padre (como CPU)
+        const type = component.getAttribute('data-component');
+        const info = contentMap[type];
+
+        if (info) {
+            modalBody.innerHTML = `
+                <h2>${info.title}</h2>
+                ${info.content}
+            `;
+            modalOverlay.classList.add('active');
+        }
+    });
+});
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        // Cierra al hacer clic fuera del modal
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+    </script>
+
+  <script>
+    // Dibujar flechas dinámicas entre componentes
+    window.addEventListener('load', () => {
+      new LeaderLine(
+        document.getElementById('cpu'),
+        document.getElementById('memory'),
+        { color: '#2c3e50', size: 3, endPlug: 'arrow' }
+      );
+
+      new LeaderLine(
+        document.getElementById('memory'),
+        document.getElementById('io'),
+        { color: '#2c3e50', size: 3, endPlug: 'arrow' }
+      );
+
+      new LeaderLine(
+        document.getElementById('cpu'),
+        document.getElementById('bus'),
+        { color: '#2c3e50', size: 3, endPlug: 'arrow' }
+      );
+
+      new LeaderLine(
+        document.getElementById('memory'),
+        document.getElementById('bus'),
+        { color: '#2c3e50', size: 3, endPlug: 'arrow' }
+      );
+
+      new LeaderLine(
+        document.getElementById('io'),
+        document.getElementById('bus'),
+        { color: '#2c3e50', size: 3, endPlug: 'arrow' }
+      );
+    });
+  </script>
+</body>
+</html>
