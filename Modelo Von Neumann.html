@@ -541,38 +541,53 @@
           bus: {
     title: '🛤️ BUS del Siste    ma (Abner Juarez)',
     content: `
-        <p>El bus es el canal de comunicación compartido que conecta los componentes principales del modelo de Von Neumann: la CPU, la memoria principal y la unidad de Entrada/Salida (E/S). Permite que la información fluya entre estos componentes de manera eficiente.</p>
-        <h4>Tipos de Buses:</h4>
-        <ul>
-            <li><strong>Bus de datos:</strong> Transporta los datos que se van a procesar o almacenar, como instrucciones o información de archivos. El ancho del bus determina cuántos bits se pueden transferir simultáneamente (8, 16, 32 o 64 bits).</li>
-            <li><strong>Bus de direcciones:</strong> Transporta la dirección de memoria donde se encuentra un dato o el puerto de un dispositivo de E/S. La CPU lo usa para seleccionar ubicaciones específicas.</li>
-            <li><strong>Bus de control:</strong> Transporta señales de control y estado que indican la dirección del flujo de datos (lectura o escritura) y sincronizan las operaciones entre los componentes.</li>
-        </ul>
-        <h4>Evolución del Bus:</h4>
-        <p>Originalmente, los buses eran paralelos, lo que significa que varias líneas transportaban bits simultáneamente. Sin embargo, con la evolución tecnológica, los sistemas modernos han adoptado buses seriales de alta velocidad como PCIe (Peripheral Component Interconnect Express) y USB (Universal Serial Bus), que permiten transferencias de datos mucho más rápidas y eficientes.</p>
+        <p>El bus de datos es el canal de comunicación entre las tres partes principales de un modelo de Von Neumann: el procesador, la memoria principal y los módulos de entrada/salida (E/S). Proporciona un ancho de banda de datos entre ellos permitiendo que la información fluya entre los componentes.</p>
+
+<h4>Área del bus:</h4>
+<ul>
+  <li>
+    <strong>Bus de datos:</strong> Se utiliza para procesar o almacenar datos, como instrucciones o información de archivo. La cantidad de bits que se pueden enviar simultáneamente (8, 16, 32 o 64 bits) determina la longitud del bus.
+  </li>
+  <li>
+    <strong>Bus de direcciones:</strong> Envía información desde una fuente a una dirección de memoria o a un puerto de dispositivo E/S. La CPU tiene un límite en el número de ranuras que puede gestionar.
+  </li>
+  <li>
+    <strong>Bus de control:</strong> Contiene símbolos de control y estado que indican dónde fluyen los datos (lectura o escritura) y los componentes asociados con las operaciones intermedias.
+  </li>
+</ul>
+
+<h4>Desarrollo de autobuses:</h4>
+<p>Inicialmente, los autobuses funcionaban en paralelo, lo que significaba que varios equipos transportaban suministros de datos simultáneamente. Sin embargo, gracias a los avances tecnológicos y a la demanda de los dispositivos, existen interfaces de alta velocidad como USB (Bus Serie Universal) y PCIe (Interconexión de Componentes Periféricos Express) para aumentar la velocidad y eficiencia de la transferencia de datos.</p>
+
     `
 },
 io: {
     title: '🔌 Unidad de Entrada y Salida (E/S) (Abner Juarez)',
     content: `
-        <p>La unidad de Entrada/Salida es responsable de gestionar la comunicación entre la computadora y el mundo exterior a través de dispositivos como el teclado, monitor, discos duros y red.</p>
-        <h4>Componentes clave:</h4>
-        <ul>
-            <li><strong>Controlador de E/S:</strong> Para cada dispositivo, el controlador contiene registros que el procesador puede leer o escribir para comunicarse con el dispositivo.</li>
-            <li><strong>Registro de Datos:</strong> Almacena los datos que se transfieren desde o hacia el dispositivo.</li>
-            <li><strong>Registro de Estado:</strong> Indica el estado actual del dispositivo, como ocupado, error o datos listos para leer.</li>
-            <li><strong>Registro de Control:</strong> Recibe comandos del procesador para controlar el funcionamiento del dispositivo.</li>
-        </ul>
-        <h4>Manejo de interrupciones:</h4>
-        <p>Una interrupción es una señal enviada por un dispositivo de E/S a la CPU para notificar que una operación ha finalizado (por ejemplo, que una tecla fue presionada). Esto permite que la CPU realice otras tareas en lugar de esperar continuamente (polling).</p>
-        <p>El ROM BIOS juega un papel clave en gestionar estas interrupciones y establecer la comunicación inicial con los dispositivos de E/S al arrancar el sistema.</p>
-        <h4>Acceso Directo a Memoria (DMA):</h4>
-        <p>Para operaciones que implican grandes volúmenes de datos, como transferir archivos desde un disco duro, la técnica DMA permite que un controlador transfiera datos directamente entre la memoria principal y el dispositivo, sin la intervención constante de la CPU, liberándola para otras tareas.</p>
-        <h4>Material Didáctico y Complementos para tu proyecto:</h4>
-        <ul>
-            <li><strong>Simuladores:</strong> El Simulador de Sistemas de Cómputo (SIMAS) y CPUlator ayudan a visualizar el flujo de datos y el funcionamiento de interrupciones.</li>
-            <li><strong>Videos educativos:</strong> Recursos como "Von Neumann Architecture" y "Computer Buses" de ITfreetraining, y "I/O Systems Overview" de Kevin P. Smith explican estos conceptos con ejemplos claros.</li>
-        </ul>
+       <p>La unidad de Entrada/Salida (E/S) tiene la tarea de manejar la interacción entre el ordenador y el entorno exterior, esto lo hace mediante aparatos como el teclado, pantalla, discos duros y red. Estos aparatos influyen directamente en el ordenador.</p>
+
+<h4>Elementos fundamentales:</h4>
+<ul>
+  <li><strong>Controlador de entrada/salida:</strong> En cada aparato, el controlador guarda los registros que el procesador puede leer o redactar para establecer comunicación con el aparato.</li>
+  <li><strong>Registro de Datos:</strong> Guarda la información que se envía o recibe desde el dispositivo.</li>
+  <li><strong>Registro de Estado:</strong> Muestra la condición actual del dispositivo, tales como ocupado, error o datos preparados para ser leídos.</li>
+  <li><strong>Registro de Control:</strong> Obtiene instrucciones del procesador para regular la operación del aparato.</li>
+</ul>
+
+<h4>Gestión de interrupciones:</h4>
+<p>Una interrupción es la señal de un dispositivo de entrada/salida que transmite la información de la acción a la CPU para informar que un proceso ha concluido (como por ejemplo, que se ha pulsado una tecla). Esto permite que la CPU lleve a cabo otras tareas en vez de esperar constantemente, a esto se le llama <em>polling</em>.</p>
+
+<p>El ROM BIOS desempeña un rol fundamental en manejar estas interrupciones y establecer la comunicación inicial con los dispositivos de entrada/salida al iniciar el sistema.</p>
+
+<h4>Acceso Directo a Memoria (DMA):</h4>
+<p>Para actividades que requieren de grandes cantidades de información, como el intercambio de archivos desde un disco duro, el método DMA permite que un controlador transmita datos directamente entre la memoria principal y el dispositivo, evitando la intervención continua de la CPU, liberándola para otras funciones.</p>
+
+<h4>Material Didáctico y Complementos para tu proyecto:</h4>
+<ul>
+  <li><strong>Simuladores:</strong> El Simulador de Sistemas de Cómputo (SIMAS) y CPUlator ayudan a visualizar el flujo de datos y el funcionamiento de interrupciones.</li>
+  <li><strong>Videos educativos:</strong> Recursos como <em>"Von Neumann Architecture"</em> y <em>"Computer Buses"</em> de ITfreetraining, y <em>"I/O Systems Overview"</em> de Kevin P. Smith explican estos conceptos con ejemplos claros.</li>
+</ul>
+
     `
 }
         };
