@@ -351,7 +351,7 @@
   </style>
 </head>
 <body>
-   
+   º
 
     <!-- MODAL -->
     <div class="modal-overlay" id="modalOverlay">
@@ -449,6 +449,55 @@
                         <li>Coordina operaciones internas</li>
                         <li>Gestiona el flujo de datos</li>
                     </ul>
+<br>
+<br>
+                    <section>
+  <h1>📌 Estados de un Proceso (Modelo Von Neumann)</h1>
+  <br>
+<img src="iconos/ciclodeviida.jpeg" alt="Ciclo de Vida" 
+     ">
+
+
+
+<br>
+
+  <p>
+    En un sistema operativo, los procesos cambian de estado según usen la <strong>CPU</strong>, 
+    esperen <strong>E/S</strong> o sean enviados a <strong>swap</strong> por falta de memoria.
+  </p>
+
+  <h2>🔹 Estados en RAM (Planificación a corto plazo)</h2>
+  <ul>
+    <li><strong>Ejecución (E):</strong> el proceso usa la CPU.</li>
+    <li><strong>Listo (P):</strong> está en RAM, esperando CPU.</li>
+    <li><strong>Bloqueado (B):</strong> espera una operación de E/S.</li>
+  </ul>
+
+  <h2>🔹 Estados en Disco/Swap (Planificación a mediano plazo)</h2>
+  <ul>
+    <li><strong>Listo Suspendido (PS):</strong> estaba listo, pero fue enviado a disco.</li>
+    <li><strong>Bloqueado Suspendido (BS):</strong> estaba bloqueado y fue expulsado a disco.</li>
+  </ul>
+
+  <h2>🔹 Transiciones principales</h2>
+  <ul>
+    <li><strong>P → E:</strong> pasa a ejecución.</li>
+    <li><strong>E → P:</strong> fin de turno (<em>time slice</em>).</li>
+    <li><strong>E → B:</strong> solicita E/S.</li>
+    <li><strong>B → P:</strong> termina la E/S.</li>
+    <li><strong>P/B → PS/BS:</strong> expulsión a disco (swap-out).</li>
+    <li><strong>PS/BS → P/B:</strong> regreso a RAM (swap-in).</li>
+    <li><strong>E → Fin:</strong> el proceso termina.</li>
+  </ul>
+
+  <p>
+    Este resumen refleja cómo el sistema operativo gestiona procesos en el 
+    <strong>modelo Von Neumann</strong>: 
+    <em>Planificación a largo plazo</em> (entrada de procesos), 
+    <em>a mediano plazo</em> (swap) y 
+    <em>a corto plazo</em> (CPU).
+  </p>
+</section>
                 `
             },
             alu: {
@@ -529,6 +578,88 @@
             <li>Es el "director de orquesta" que garantiza el correcto funcionamiento de la CPU y la correcta ejecución de los programas.</li>
             <li>Su diseño y funcionamiento mantienen la estructura secuencial clásica que ha permanecido vigente en la mayoría de los computadores modernos.</li>
         </ul>
+<section>
+  <h1>📌 Algoritmos</h1>
+  <p>
+    Los algoritmos en sistemas operativos se dividen en tres grandes grupos: 
+    planificación, soluciones de sincronización y desbloqueo.
+  </p>
+
+  <h2>De planificación:</h2>
+  <ul>
+    <li><strong>Round Robin (RR)</strong> → La CPU se reparte en turnos iguales. Cada proceso recibe un tiempo fijo.</li>
+    <li><strong>PEPS (cola)</strong> → Atiende procesos en el orden en que llegaron (primero en entrar, primero en salir).</li>
+    <li><strong>UEPS (pila)</strong> → Atiende primero al proceso más reciente (último en entrar, primero en salir).</li>
+    <li><strong>Aleatorio</strong> → El proceso siguiente se elige al azar. No es predecible, pero sirve en pruebas o simulaciones.</li>
+  </ul>
+
+  <h2>De soluciones:</h2>
+  <ul>
+    <li><strong>Cena de los Filósofos</strong> → Varios procesos comparten recursos; si no se coordinan, hay riesgo de bloqueo (<em>deadlock</em>).</li>
+    <li><strong>Barbero</strong> → Modelo de atención con clientes que esperan como en una cola.</li>
+    <li><strong>Productor-Consumidor</strong> → Productores generan datos y consumidores los usan; requieren coordinación con un buffer compartido.</li>
+    <li><strong>Lectores-Escritores</strong> → Los lectores pueden entrar juntos, pero los escritores necesitan exclusión total.</li>
+  </ul>
+
+  <h2>De desbloqueo:</h2>
+  <ul>
+    <li><strong>Banquero</strong> → Método para evitar deadlock: solo concede recursos si después de hacerlo el sistema puede seguir funcionando de manera segura.</li>
+  </ul>
+</section>
+
+<br>
+<br>
+        <h1>Comunicación entre Procesos (IPC)</h1>
+
+<h2>1. Concepto</h2>
+<p>
+La <strong>comunicación entre procesos (IPC)</strong> es el conjunto de mecanismos 
+que permiten que varios procesos intercambien datos, cooperen y se sincronicen 
+para alcanzar un objetivo común. Es necesaria porque los procesos pueden ser 
+independientes o cooperantes y a menudo comparten recursos.
+</p>
+
+<h2>2. Tipos de procesos</h2>
+<ul>
+  <li><strong>Independientes:</strong> se ejecutan sin necesidad de otros procesos.</li>
+  <li><strong>Cooperantes:</strong> trabajan en conjunto, comparten información y recursos.</li>
+</ul>
+
+<h2>3. Problemas clásicos de sincronización</h2>
+<ul>
+  <li><strong>Sección crítica:</strong> parte del código donde se accede a recursos compartidos, 
+      debe garantizarse exclusión mutua.</li>
+  <li><strong>Productor–Consumidor:</strong> un proceso genera datos y otro los consume; 
+      requiere sincronización con buffers.</li>
+  <li><strong>Lectores–Escritores:</strong> varios lectores pueden acceder en paralelo, 
+      pero los escritores requieren acceso exclusivo.</li>
+  <li><strong>Cliente–Servidor:</strong> un proceso solicita un servicio (cliente) y otro lo atiende (servidor).</li>
+</ul>
+
+<h2>4. Mecanismos de comunicación</h2>
+<ul>
+  <li><strong>Archivos:</strong> permiten comunicar procesos, aunque son lentos.</li>
+  <li><strong>Tuberías (pipes, FIFOs):</strong> canales unidireccionales o bidireccionales 
+      que permiten enviar y recibir datos.</li>
+  <li><strong>Memoria compartida:</strong> espacio común de memoria para que los procesos intercambien información.</li>
+  <li><strong>Paso de mensajes:</strong> envío y recepción de datos a través del sistema operativo.</li>
+</ul>
+
+<h2>5. Mecanismos de sincronización</h2>
+<ul>
+  <li><strong>Semáforos:</strong> variables enteras que controlan acceso mediante operaciones <code>wait</code> y <code>signal</code>.</li>
+  <li><strong>Mutex:</strong> “candado” que asegura que solo un proceso/hilo acceda al recurso a la vez.</li>
+  <li><strong>Variables condicionales:</strong> permiten suspender un proceso hasta que se cumpla una condición.</li>
+</ul>
+
+<h2>6. Interbloqueos (Deadlocks)</h2>
+<p>
+Un interbloqueo ocurre cuando varios procesos esperan indefinidamente recursos 
+que otros poseen. Para que ocurra deben cumplirse simultáneamente:
+<strong>exclusión mutua</strong>, <strong>retención y espera</strong>, 
+<strong>no expropiación</strong> y <strong>espera circular</strong>.
+</p>
+<p><strong>Estrategias:</strong> detección y recuperación, prevención, predicción de estados seguros o ignorar el problema.</p>
     `
 },
            memory: {
@@ -541,51 +672,146 @@
 <p>🏗 <strong>Jerarquía de memoria:</strong><br> La RAM es parte de una jerarquía de memoria que organiza los niveles según su velocidad y cercanía a la CPU. Las más rápidas (como registros y caché) están arriba, y las más lentas (como el disco duro), abajo. La RAM guarda datos que se usarán pronto y permite que el sistema funcione con rapidez.</p>
 <p>🧠 <strong>Importancia hoy en día:</strong><br> La RAM permite que programas como videojuegos, editores de video o sistemas de IA funcionen sin trabarse. Cuanta más RAM y más rápida, mejor rendimiento multitarea.</p>
 
-<section>
-  <h1>📌 Estados de un Proceso (Modelo Von Neumann)</h1>
-  <br>
-<img src="iconos/ciclodeviida.jpeg" alt="Ciclo de Vida" 
-     ">
-
-
 
 <br>
+<br>
 
+<section>
+  <h1>📌 Gestión de memoria</h1>
+
+  <img src="iconos/jerarquiamemoria.jpeg" alt="Jerarquia de Memoria" 
+     ">
   <p>
-    En un sistema operativo, los procesos cambian de estado según usen la <strong>CPU</strong>, 
-    esperen <strong>E/S</strong> o sean enviados a <strong>swap</strong> por falta de memoria.
+    Es el conjunto de funciones y técnicas que utiliza el sistema operativo para administrar la 
+    <strong>memoria principal</strong> en el modelo de Von Neumann.
+  </p>
+  <p>
+    Su propósito es garantizar <em>aislamiento</em>, <em>seguridad</em> y <em>eficiencia</em>, de forma que cada 
+    proceso crea tener la máquina para sí mismo, mientras comparte recursos con otros.
+  </p>
+  <p>
+    Incluye:
+  </p>
+  <ul>
+    <li><strong>Espacios lógicos independientes</strong> → cada proceso tiene su propio espacio de direcciones.</li>
+    <li><strong>Reubicación y protección</strong> → traducción de direcciones lógicas a físicas mediante la MMU y validaciones de acceso.</li>
+    <li><strong>Compartición de memoria</strong> → zonas comunes (ej. bibliotecas) que varios procesos pueden usar simultáneamente.</li>
+    <li><strong>Soporte de regiones</strong> → el mapa de un proceso incluye código, datos, pila, heap y archivos proyectados, cada uno con permisos específicos.</li>
+    <li><strong>Maximizar multiprogramación</strong> → reducir fragmentación y administrar asignación para más procesos activos.</li>
+    <li><strong>Memoria virtual</strong> → combinación de RAM y disco que simula más memoria (paginación, segmentación, reemplazo de páginas).</li>
+  </ul>
+  <p>
+    <em>Técnicas destacadas:</em> paginación, segmentación y políticas de reemplazo (FIFO, LRU, Reloj).
+  </p>
+</section>
+
+<br>
+<br>
+
+<section>
+  <h2>📌 Core Image</h2>
+  <p>
+    Es la <strong>imagen binaria</strong> que se genera al compilar un programa y que se transfiere del 
+    <strong>disco duro</strong> a la <strong>RAM</strong> en milésimas de segundo al momento de ejecutarlo.
+  </p>
+  <p>
+    Contiene:
+  </p>
+  <ul>
+    <li><strong>Código objeto</strong> → instrucciones listas para el procesador (PC, IR).</li>
+    <li><strong>Datos</strong> → variables, constantes y estructuras de información.</li>
+    <li><strong>Estructuras</strong> → pilas, colas, grafos, etc.</li>
+  </ul>
+  <p>
+    <em>Es el programa listo para ejecutarse en memoria.</em>
+  </p>
+</section>
+
+<br>
+<br>
+
+<section>
+  <h2>📌 BCP (Bloque de Control de Proceso)</h2>
+  <p>
+    Es una estructura que guarda toda la información necesaria para administrar un proceso.
+  </p>
+  <p>
+    Incluye:
+  </p>
+  <ul>
+    <li><strong>Identificadores</strong> → PID (proceso) y UID (usuario dueño).</li>
+    <li><strong>Archivos abiertos</strong> → lista de recursos en uso.</li>
+    <li><strong>Memoria asignada</strong> → páginas, marcos y regiones (RIED).</li>
+    <li><strong>Temporizadores</strong> → controlan tiempo de CPU y vencimiento.</li>
+    <li><strong>Señales</strong> → permiten que procesos se comuniquen entre sí.</li>
+    <li><strong>Mecanismos de sincronización</strong> → mutex y semáforos para proteger acceso a memoria compartida.</li>
+    <li><strong>Puertos</strong> → canales de comunicación, controlados por firewall o herramientas como <em>nmap</em>.</li>
+  </ul>
+  <p>
+    El BCP es clave en el <strong>cambio de contexto</strong>: el sistema guarda y recupera esta información 
+    para detener y reanudar procesos.
+  </p>
+</section>
+<br>
+<br>
+<section>
+  <h1>📌 Traducción de memoria</h1>
+
+  <img src="iconos/mmu.jpeg" alt="Traducción de Memoria" 
+     ">
+  
+  <h2>🔹 De 1 nivel</h2>
+  <p>
+    Se usa una sola tabla que funciona como un <strong>“diccionario”</strong>, la cual convierte 
+    direcciones virtuales en direcciones físicas de la RAM.
+  </p>
+  <p><strong>Componentes:</strong></p>
+  <ul>
+    <li><strong>UC</strong> → solicita traducción y genera la dirección virtual.</li>
+    <li><strong>MMU (Unidad de Gestión de Memoria)</strong> → consulta la tabla de páginas.</li>
+    <li><strong>Tabla de páginas</strong> → contiene la relación entre páginas virtuales y marcos físicos.</li>
+    <li><strong>RAM</strong> → almacena los marcos de memoria donde realmente están los datos.</li>
+  </ul>
+  <p><strong>Funcionamiento:</strong></p>
+  <ul>
+    <li><strong>1.</strong> → El programa pide una dirección (virtual).</li>
+    <li><strong>2.</strong> → La MMU busca esa dirección en la tabla de páginas.</li>
+    <li><strong>3.</strong> → La tabla indica en qué marco de la RAM está la página.</li>
+    <li><strong>4.</strong> → La dirección virtual se traduce en dirección física.</li>
+    <li><strong>5.</strong> → Se accede a esa posición en memoria.</li>
+  </ul>
+  <p>
+    <strong>Nota:</strong>  
+    Si la página solicitada no está en RAM y no hay espacio, el sistema realiza 
+    <em>swap</em> → se libera espacio moviendo páginas a disco y se carga la nueva página en memoria.
   </p>
 
-  <h2>🔹 Estados en RAM (Planificación a corto plazo)</h2>
-  <ul>
-    <li><strong>Ejecución (E):</strong> el proceso usa la CPU.</li>
-    <li><strong>Listo (P):</strong> está en RAM, esperando CPU.</li>
-    <li><strong>Bloqueado (B):</strong> espera una operación de E/S.</li>
-  </ul>
-
-  <h2>🔹 Estados en Disco/Swap (Planificación a mediano plazo)</h2>
-  <ul>
-    <li><strong>Listo Suspendido (PS):</strong> estaba listo, pero fue enviado a disco.</li>
-    <li><strong>Bloqueado Suspendido (BS):</strong> estaba bloqueado y fue expulsado a disco.</li>
-  </ul>
-
-  <h2>🔹 Transiciones principales</h2>
-  <ul>
-    <li><strong>P → E:</strong> pasa a ejecución.</li>
-    <li><strong>E → P:</strong> fin de turno (<em>time slice</em>).</li>
-    <li><strong>E → B:</strong> solicita E/S.</li>
-    <li><strong>B → P:</strong> termina la E/S.</li>
-    <li><strong>P/B → PS/BS:</strong> expulsión a disco (swap-out).</li>
-    <li><strong>PS/BS → P/B:</strong> regreso a RAM (swap-in).</li>
-    <li><strong>E → Fin:</strong> el proceso termina.</li>
-  </ul>
-
+  <h2>🔹 De 2 niveles</h2>
   <p>
-    Este resumen refleja cómo el sistema operativo gestiona procesos en el 
-    <strong>modelo Von Neumann</strong>: 
-    <em>Planificación a largo plazo</em> (entrada de procesos), 
-    <em>a mediano plazo</em> (swap) y 
-    <em>a corto plazo</em> (CPU).
+    Se usan <strong>dos tablas en jerarquía</strong>, lo que permite reducir el tamaño total de la tabla 
+    de páginas y aprovechar mejor la memoria.
+  </p>
+  <p><strong>Componentes:</strong></p>
+  <ul>
+    <li><strong>UC</strong> → genera la dirección virtual dividida en: índice de tabla 1, índice de tabla 2 y desplazamiento.</li>
+    <li><strong>MMU</strong> → consulta la tabla de primer nivel y luego la de segundo nivel.</li>
+    <li><strong>Tabla de primer nivel</strong> → indica qué tabla secundaria usar.</li>
+    <li><strong>Tabla de segundo nivel</strong> → contiene la relación entre páginas virtuales y marcos físicos.</li>
+    <li><strong>RAM</strong> → almacena los marcos de memoria donde están los datos.</li>
+  </ul>
+  <p><strong>Funcionamiento:</strong></p>
+  <ul>
+    <li><strong>1.</strong> → El programa pide una dirección (virtual).</li>
+    <li><strong>2.</strong> → La MMU consulta la <em>tabla de primer nivel</em>.</li>
+    <li><strong>3.</strong> → Esa tabla indica cuál <em>tabla de segundo nivel</em> usar.</li>
+    <li><strong>4.</strong> → En la tabla de segundo nivel se obtiene el marco de la RAM.</li>
+    <li><strong>5.</strong> → Se une el marco con el desplazamiento para formar la dirección física.</li>
+    <li><strong>6.</strong> → Se accede a esa posición en memoria.</li>
+  </ul>
+  <p>
+    <strong>Nota:</strong>  
+    Si la página solicitada no está en RAM y no hay espacio disponible, el sistema hace 
+    <em>swap</em> con el disco: mueve páginas viejas a almacenamiento secundario y trae la nueva.
   </p>
 </section>
     `
@@ -626,10 +852,9 @@ io: {
   <li><strong>Registro de Control:</strong> Obtiene instrucciones del procesador para regular la operación del aparato.</li>
 </ul>
 
-<h4>Gestión de interrupciones:</h4>
-<p>Una interrupción es la señal de un dispositivo de entrada/salida que transmite la información de la acción a la CPU para informar que un proceso ha concluido (como por ejemplo, que se ha pulsado una tecla). Esto permite que la CPU lleve a cabo otras tareas en vez de esperar constantemente, a esto se le llama <em>polling</em>.</p>
 
-<p>El ROM BIOS desempeña un rol fundamental en manejar estas interrupciones y establecer la comunicación inicial con los dispositivos de entrada/salida al iniciar el sistema.</p>
+
+
 
 <h4>Acceso Directo a Memoria (DMA):</h4>
 <p>Para actividades que requieren de grandes cantidades de información, como el intercambio de archivos desde un disco duro, el método DMA permite que un controlador transmita datos directamente entre la memoria principal y el dispositivo, evitando la intervención continua de la CPU, liberándola para otras funciones.</p>
@@ -639,6 +864,42 @@ io: {
   <li><strong>Simuladores:</strong> El Simulador de Sistemas de Cómputo (SIMAS) y CPUlator ayudan a visualizar el flujo de datos y el funcionamiento de interrupciones.</li>
   <li><strong>Videos educativos:</strong> Recursos como <em>"Von Neumann Architecture"</em> y <em>"Computer Buses"</em> de ITfreetraining, y <em>"I/O Systems Overview"</em> de Kevin P. Smith explican estos conceptos con ejemplos claros.</li>
 </ul>
+
+<section>
+  <h1>📌 Interrupciones</h1>
+  <ul>
+    <li>
+      <strong>Señal (hardware o software)</strong>  
+      <p>
+        Una interrupción detiene temporalmente la CPU para que atienda un evento urgente, 
+        como una tecla presionada, una operación de E/S o un error de memoria.
+      </p>
+    </li>
+    <li>
+      <strong>Rutina de servicio (ISR)</strong>  
+      <p>
+        Es el código que maneja la interrupción. Realiza el trabajo mínimo necesario 
+        (por ejemplo, confirmar el evento) y delega el procesamiento más pesado a otros procesos o hilos.
+      </p>
+    </li>
+    <li>
+      <strong>Tipos principales</strong>
+      <ul>
+        <li><strong>Timer</strong> → controla el tiempo de CPU para la planificación.</li>
+        <li><strong>I/O</strong> → generadas por dispositivos como teclado, disco o red.</li>
+        <li><strong>Trap / Syscall</strong> → creadas por software para pedir un servicio al sistema operativo.</li>
+        <li><strong>Fallos de memoria</strong> → cuando se accede a direcciones inválidas o faltan páginas.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Prioridad y enmascaramiento</strong>  
+      <p>
+        El sistema puede dar prioridad a ciertas interrupciones sobre otras y bloquear 
+        (“enmascarar”) algunas señales para evitar que interrumpan procesos críticos.
+      </p>
+    </li>
+  </ul>
+</section>
 
     `
 }
