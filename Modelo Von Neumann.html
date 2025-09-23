@@ -16,6 +16,13 @@
       background-color: #f4f6f8;
       padding: 20px;
       min-height: 100vh;
+
+                 display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
     }
 
     .container {
@@ -94,7 +101,12 @@
       grid-row: 1;
       background-color: #68A2D2;
     }
-
+img {
+            width: 300px;        /* Tamaño regular */
+            height: auto;        /* Mantiene proporción */
+            border-radius: 15px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
     .cpu-subcomponents {
       display: flex;
       gap: 20px;
@@ -529,6 +541,9 @@
 
 <section>
   <h1>📌 Estados de un Proceso (Modelo Von Neumann)</h1>
+  <br
+   <img src="iconos/ciclodeviida.jpeg" alt="Ciclo de Vida">
+
   <p>
     En un sistema operativo, los procesos cambian de estado según usen la <strong>CPU</strong>, 
     esperen <strong>E/S</strong> o sean enviados a <strong>swap</strong> por falta de memoria.
