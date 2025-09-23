@@ -526,6 +526,46 @@
 <p>🔍 <strong>Características clave:</strong></p> <ul> <li>📌 <strong>Acceso aleatorio:</strong> Se puede acceder a cualquier dato directamente.</li> <li>🚀 <strong>Alta velocidad:</strong> Mucho más rápida que un disco duro.</li> <li>⚠ <strong>Volátil:</strong> Se borra al apagar la computadora.</li> </ul>
 <p>🏗 <strong>Jerarquía de memoria:</strong><br> La RAM es parte de una jerarquía de memoria que organiza los niveles según su velocidad y cercanía a la CPU. Las más rápidas (como registros y caché) están arriba, y las más lentas (como el disco duro), abajo. La RAM guarda datos que se usarán pronto y permite que el sistema funcione con rapidez.</p>
 <p>🧠 <strong>Importancia hoy en día:</strong><br> La RAM permite que programas como videojuegos, editores de video o sistemas de IA funcionen sin trabarse. Cuanta más RAM y más rápida, mejor rendimiento multitarea.</p>
+
+<section>
+  <h1>📌 Estados de un Proceso (Modelo Von Neumann)</h1>
+  <p>
+    En un sistema operativo, los procesos cambian de estado según usen la <strong>CPU</strong>, 
+    esperen <strong>E/S</strong> o sean enviados a <strong>swap</strong> por falta de memoria.
+  </p>
+
+  <h2>🔹 Estados en RAM (Planificación a corto plazo)</h2>
+  <ul>
+    <li><strong>Ejecución (E):</strong> el proceso usa la CPU.</li>
+    <li><strong>Listo (P):</strong> está en RAM, esperando CPU.</li>
+    <li><strong>Bloqueado (B):</strong> espera una operación de E/S.</li>
+  </ul>
+
+  <h2>🔹 Estados en Disco/Swap (Planificación a mediano plazo)</h2>
+  <ul>
+    <li><strong>Listo Suspendido (PS):</strong> estaba listo, pero fue enviado a disco.</li>
+    <li><strong>Bloqueado Suspendido (BS):</strong> estaba bloqueado y fue expulsado a disco.</li>
+  </ul>
+
+  <h2>🔹 Transiciones principales</h2>
+  <ul>
+    <li><strong>P → E:</strong> pasa a ejecución.</li>
+    <li><strong>E → P:</strong> fin de turno (<em>time slice</em>).</li>
+    <li><strong>E → B:</strong> solicita E/S.</li>
+    <li><strong>B → P:</strong> termina la E/S.</li>
+    <li><strong>P/B → PS/BS:</strong> expulsión a disco (swap-out).</li>
+    <li><strong>PS/BS → P/B:</strong> regreso a RAM (swap-in).</li>
+    <li><strong>E → Fin:</strong> el proceso termina.</li>
+  </ul>
+
+  <p>
+    Este resumen refleja cómo el sistema operativo gestiona procesos en el 
+    <strong>modelo Von Neumann</strong>: 
+    <em>Planificación a largo plazo</em> (entrada de procesos), 
+    <em>a mediano plazo</em> (swap) y 
+    <em>a corto plazo</em> (CPU).
+  </p>
+</section>
     `
 },
           bus: {
